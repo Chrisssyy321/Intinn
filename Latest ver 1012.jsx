@@ -194,6 +194,7 @@ function randomize({c}){
   // const WORDS = [{ scrambled: [..."MEMORY"].sort(()=>Math.random()-.5).join(''), answer: "MEMORY" }, { scrambled: [..."BRAIN"].sort(()=>Math.random()-.5).join(''), answer: "BRAIN" }, { scrambled:[..."COFNITIVE"].sort(()=>Math.random()-.5).join(''), answer: "COGNITIVE" }];
 // const WORDS = [{ scrambled: randomize("MEMORY"), answer: "MEMORY" }, { scrambled: randomize("BRAIN"), answer: "BRAIN" }, { scrambled: randomize("COGNITIVE"), answer: "COGNITIVE" }];
 const BRAIN_FOODS = [
+  
   { name: "Wild Salmon", benefit: "Omega-3 DHA", icon: "🐟", cat: "omega3" },
   { name: "Blueberries", benefit: "Antioxidants", icon: "🫐", cat: "antioxidant" },
   { name: "Walnuts", benefit: "Omega-3 + Vit E", icon: "🌰", cat: "omega3" },
