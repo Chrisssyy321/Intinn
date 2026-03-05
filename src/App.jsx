@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
-import Logo from './Logo1.png';
+import Logo from './Logo.png';
 import { Analytics } from "@vercel/analytics/react"
 const delay = ms => new Promise(
   resolve => setTimeout(resolve, ms)
@@ -41,6 +41,8 @@ const G = {
   green: "linear-gradient(135deg, #2DC653 0%, #00C2A8 100%)",
   hero: "linear-gradient(160deg, #84edcd 0%, #18ab78 40%, #047450 100%)",
 };
+
+
 
 const globalStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
