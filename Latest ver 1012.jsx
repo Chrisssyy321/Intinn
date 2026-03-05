@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
-import Logo from './Logo1.png';
-import { Analytics } from "@vercel/analytics/react"
-const delay = ms => new Promise(
-  resolve => setTimeout(resolve, ms)
-);
-//img src
+
 // ─── VIBRANT COLOUR SYSTEM ────────────────────────────────────────────────────
 const C = {
   bg: "#ffffff",
@@ -26,7 +21,7 @@ const C = {
   subtle: "#9CA3AF",
   border: "#6fd9f6",
   patientColor: "#a3beff",
-  familyColor: "rgb(96, 0, 85)",
+  familyColor: "rgb(92, 0, 81)",
   caregiverColor: "#00564a",
 };
 
@@ -34,8 +29,6 @@ const G = {
   coral: "linear-gradient(135deg, rgb(14, 101, 207) 100%, #3564ff 100%)",
   blue: "linear-gradient(135deg, rgb(165, 205, 204) 54%, #628ef5 100%)",
   teal: "linear-gradient(135deg, #17e4c9 44%, #00a5c6 70%)",
-  wbg: "linear-gradient(135deg, #ffffff 0%, #52bdff 100%)",
-  wbg: "linear-gradient(135deg, #52bdff 0%, #afe3ff 100%)",
   yellow: "linear-gradient(135deg, #129a7e 0%, #85e5bb 100%)",
   pink: "linear-gradient(135deg, #F72585 0%, #7B2FBE 100%)",
   green: "linear-gradient(135deg, #2DC653 0%, #00C2A8 100%)",
@@ -72,7 +65,6 @@ const globalStyles = `
 
 // ─── MOCK DATA ────────────────────────────────────────────────────────────────
 const DB = {
-  
   getUsers: () => { try { return JSON.parse(localStorage.getItem("mt_users") || "{}"); } catch { return {}; } },
   saveUsers: (u) => localStorage.setItem("mt_users", JSON.stringify(u)),
   getSession: () => { try { return JSON.parse(localStorage.getItem("mt_session") || "null"); } catch { return null; } },
@@ -121,7 +113,7 @@ const S = {
     color: textColor,
     boxShadow: "0 8px 32px rgba(0,0,0,0.14)",
   }),
-  btn: (gradient, text = "#ffffff") => ({
+  btn: (gradient, text = "#FAEBD7") => ({
     background: gradient, color: text, border: "none", borderRadius: 14,
     padding: "16px 32px", fontSize: "1.05rem", fontWeight: 700,
     fontFamily: "'Poppins', sans-serif", cursor: "pointer",
@@ -139,7 +131,7 @@ const S = {
     fontFamily: "'Poppins', sans-serif", cursor: "pointer",
   }),
   input: () => ({
-    width: "100%", background: "#ffffff", border: `2px solid ${C.border}`,
+    width: "100%", background: "#FAEBD7", border: `2px solid ${C.border}`,
     borderRadius: 12, padding: "16px 20px", color: C.text,
     fontSize: "1.05rem", fontWeight: 500, fontFamily: "'Poppins', sans-serif",
   }),
@@ -150,8 +142,8 @@ const S = {
   h4: { fontSize: "1.2rem", fontWeight: 700, color: C.text },
   body: { fontSize: "1.05rem", color: C.text, lineHeight: 1.7 },
   muted: { fontSize: "1rem", color: C.muted, lineHeight: 1.6 },
-  error: { background: "#ffffff", border: `2px solid ${C.coral}40`, borderRadius: 12, padding: "14px 18px", fontSize: "1rem", color: C.coral, fontWeight: 600 },
-  success: { background: "#ffffff", border: `2px solid ${C.teal}40`, borderRadius: 12, padding: "14px 18px", fontSize: "1rem", color: C.teal, fontWeight: 700 },
+  error: { background: "#FAEBD7", border: `2px solid ${C.coral}40`, borderRadius: 12, padding: "14px 18px", fontSize: "1rem", color: C.coral, fontWeight: 600 },
+  success: { background: "#FAEBD7", border: `2px solid ${C.teal}40`, borderRadius: 12, padding: "14px 18px", fontSize: "1rem", color: C.teal, fontWeight: 700 },
 };
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
@@ -163,22 +155,53 @@ const BASELINE = 72;
 const ALL_EMOJIS = ["🌸", "🎯", "🦋", "🌟", "🎨", "🍎", "🐶", "🚀"];
 const numbersDone = [];
 
+//const allalt=[1,2,3,4,5,"A","B","C","D"];
+  //  const numbersalt = [];
+    //const correctalt = [];
+//    for (let i = 0; i < 4; i++) {
+ //     let j = Math.floor(Math.random() * allalt.length);
+   //   while (numbersalt.includes(j)) {
+    //    j = Math.floor(Math.random() * allalt.length);
+     // }
+     // numbersalt.push(j);
+     // correctalt.push(allalt[j]);
+   // }
 function randomize({c}){
   return c ;
 
+//     let b ="";
+//     const a = c;
+//     let arr1 = this.split("");
+//     // let arr = a;
+//     let n = arr1.length;
+//     for(var i = n - 1; i > 0; i--) {
+//         var j = Math.floor(Math.random() * (i + 1));
+//         var tmp = arr1[i];
+//         arr1[i] = arr1[j];
+//         arr1[j] = tmp;
+        
+//     }
+// for (var k = 0; k<n;k++){
+//     b+=arr1[k];
+// }
+    // console.log([...c].sort(()=>Math.random()-.5).join(''))
+    // return c => [...c].sort(()=>Math.random()-.5).join('');
+
+  //  return c.split(' ').sort(function(){return 0.5-Math.random()}).join('');
+
 }
 
+  // const WORDS = [{ scrambled: [..."MEMORY"].sort(()=>Math.random()-.5).join(''), answer: "MEMORY" }, { scrambled: [..."BRAIN"].sort(()=>Math.random()-.5).join(''), answer: "BRAIN" }, { scrambled:[..."COFNITIVE"].sort(()=>Math.random()-.5).join(''), answer: "COGNITIVE" }];
+// const WORDS = [{ scrambled: randomize("MEMORY"), answer: "MEMORY" }, { scrambled: randomize("BRAIN"), answer: "BRAIN" }, { scrambled: randomize("COGNITIVE"), answer: "COGNITIVE" }];
 const BRAIN_FOODS = [
-  { name: "Breakfast 1", benefit: "Oats+Eggs+Youghurt", icon: "", cat: "breakfast" },
-  { name: "Breakfast 2", benefit: "Smoothie+Toastie+Berry", icon: "", cat: "breakfast" },
-  { name: "Lunch 1", benefit: "Rice+Lentils+Spinach", icon: "", cat: "lunch" },
-  { name: "Lunch 2", benefit: "Tortilla+Hummus+Beans", icon: "", cat: "lunch" },
-  { name: "Dinner 1", benefit: "Fish+Broccoli+Bread", icon: "", cat: "dinner" },
-  { name: "Dinner 2", benefit: "Tofu+Veggies", icon: "", cat: "dinner" },
-  { name: "Don't drink", benefit: "Alcohol", icon: "", cat: "avoid" },
-  { name: "Avoid", benefit: "Sugary Snacks", icon: "", cat: "avoid" },
-  { name: "Avoid", benefit: "Processed meats", icon: "", cat: "avoid" },
-  { name: "Avoid", benefit: "Fried Food", icon: "", cat: "avoid" },
+  { name: "Wild Salmon", benefit: "Omega-3 DHA", icon: "🐟", cat: "omega3" },
+  { name: "Blueberries", benefit: "Antioxidants", icon: "🫐", cat: "antioxidant" },
+  { name: "Walnuts", benefit: "Omega-3 + Vit E", icon: "🌰", cat: "omega3" },
+  { name: "Spinach", benefit: "Folate + B9", icon: "🥬", cat: "bvitamin" },
+  { name: "Eggs", benefit: "Choline + B12", icon: "🥚", cat: "bvitamin" },
+  { name: "Dark Chocolate", benefit: "Flavanoids", icon: "🍫", cat: "antioxidant" },
+  { name: "Avocado", benefit: "Healthy fats", icon: "🥑", cat: "omega3" },
+  { name: "Broccoli", benefit: "Vit K + C", icon: "🥦", cat: "antioxidant" },
 ];
 const DECADES = ["1950s", "1960s", "1970s", "1980s", "1990s", "2000s"];
 const GENRES = ["Pop Classics", "Jazz", "Folk", "Classical", "Rock", "Country"];
@@ -188,6 +211,16 @@ const PLAYLISTS = {
   "1960s": ["Hey Jude – Beatles", "What a Wonderful World – Armstrong", "Respect – Aretha Franklin", "Brown Eyed Girl – Van Morrison"],
   "1990s": ["Wonderwall – Oasis", "Smells Like Teen Spirit – Nirvana", "Un-Break My Heart – Toni Braxton", "Killing Me Softly – Fugees"],
 };
+const ACTIVITY_OPTIONS = [
+  { id: "walk", icon: "🚶", label: "Walk", gradient: G.teal, color: C.teal },
+  { id: "exercise", icon: "🏋️", label: "Exercise", gradient: G.coral, color: C.coral },
+  { id: "reading", icon: "📚", label: "Reading", gradient: G.blue, color: C.blue },
+  { id: "meditation", icon: "🧘", label: "Meditation", gradient: G.pink, color: C.pink },
+  { id: "socialise", icon: "💬", label: "Socialising", gradient: G.yellow, color: C.orange },
+  { id: "gardening", icon: "🌱", label: "Gardening", gradient: G.green, color: C.green },
+  { id: "cooking", icon: "🍳", label: "Cooking", gradient: G.yellow, color: C.orange },
+  { id: "puzzle", icon: "🧩", label: "Puzzle", gradient: G.blue, color: C.blue },
+];
 
 // ─── SMALL COMPONENTS ─────────────────────────────────────────────────────────
 function Badge({ children, color = C.coral }) {
@@ -199,7 +232,6 @@ function Badge({ children, color = C.coral }) {
 }
 
 function GBadge({ children, gradient }) {
-   
   return (
     <span style={{ background: gradient, color: "#FAEBD7", borderRadius: 100, padding: "5px 16px", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em" }}>
       {children}
@@ -216,7 +248,7 @@ function Chip({ label, active, onClick, color, gradient }) {
       borderRadius: 100, padding: "8px 20px",
       fontSize: "0.9rem", fontWeight: active ? 700 : 500,
       fontFamily: "'Poppins',sans-serif", cursor: "pointer",
-      boxShadow: active ? "0 4px 14px #ffffff26" : "none",
+      boxShadow: active ? "0 4px 14px rgba(255, 255, 255, 0.15)" : "none",
       transition: "all 0.15s",
     }}>{label}</button>
   );
@@ -263,20 +295,8 @@ function TopNav({ active, onNav, role, user, onLogout }) {
     <nav style={{ background: C.white, borderBottom: `2px solid ${C.border}`, padding: "0 48px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 20px rgba(0,0,0,0.06)" }}>
       <div style={{ maxWidth: 1240, margin: "0 auto", display: "flex", alignItems: "center", height: 76 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginRight: 48, cursor: "pointer" }} onClick={() => onNav("home")}>
-          {/* {/* <div style={{ width: 40, height: 40, background: G.coral, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", boxShadow: "0 4px 12px rgba(255,71,87,0.3)" }}> */}
-            {/* <div style={{ width: 40, height: 40, borderRadius: 12, overflow: "hidden" }}>
-            {/* <img src={"./Logo.jpeg"} alt="Intinn Logo" height={20} width={20} /> */}
-
-{/* 
-            <img src={Logo} alt="Intinn" width={40} height={40} /> */}
-            {/* <img src={Logo} alt="Intinn" style={{ width: 40, height: 40, borderRadius: 12, objectFit: "contain" }} />
-  
-
-            
-            </div>  */}
-
-            <img src={Logo} alt="Intinn" style={{ height: 50, width: "auto", maxWidth: 120 }} />
-          <span style={{ fontSize: "1.4rem", fontWeight: 900, background: G.coral, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Intinn</span>
+          <div style={{ width: 40, height: 40, background: G.coral, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.3rem", boxShadow: "0 4px 12px rgba(255,71,87,0.3)" }}>🧠</div>
+          <span style={{ fontSize: "1.4rem", fontWeight: 900, background: G.coral, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>MindTrack</span>
         </div>
         <div style={{ display: "flex", gap: 4, flex: 1 }}>
           {items.map(item => {
@@ -323,7 +343,6 @@ function TopNav({ active, onNav, role, user, onLogout }) {
 // APP ROOT
 // ═══════════════════════════════════════════════════════════════════════════════
 export default function App() {
-    console.log(Logo + "wkfhi"); 
   const [authUser, setAuthUser] = useState(null);
   const [screen, setScreen] = useState("home");
   const [checkIn, setCheckIn] = useState({ mood: 7, energy: 6, sleep: 7, focus: 6 });
@@ -337,11 +356,10 @@ export default function App() {
   if (booting) return (
     <>
       <style>{globalStyles}</style>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: C.bg }}>
-        <div className="float" style={{ fontSize: "5rem" }}><img src={Logo} alt="Intinn" style={{ height: 400, width: "auto", maxWidth: 960 }} /></div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: G.hero }}>
+        <div className="float" style={{ fontSize: "5rem" }}>🧠</div>
       </div>
     </>
-    // await delay(1000);
   );
 
   if (!authUser) return <AuthFlow onAuth={setAuthUser} />;
@@ -382,21 +400,13 @@ function MiniNav({ onLogin, onRegister }) {
     <div style={{ padding: "0 48px", borderBottom: `2px solid ${C.border}`, background: "rgba(255,255,255,0.9)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10 }}>
       <div style={{ maxWidth: 1240, margin: "0 auto", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-     {/* <div style={{ width: 38, height: 38, borderRadius: 10, overflow: "hidden" }}> */}
-<img src={Logo} alt="Intinn" style={{ height: 50, width: "auto", maxWidth: 120 }} />
-          
-            {/* <img src={Logo} alt="Intinn image"/> */}
-             {/* <img src={Logo} alt="Intinn" width={40} height={40} /> */}
-            {/* height={20} width={20} */}
-            {/* <img src={Logo} alt="Intinn" style={{ width: 40, height: 40, borderRadius: 12, objectFit: "contain" }} />      
-            
-            </div> */}
-          <span style={{ fontSize: "1.3rem", fontWeight: 900, background: G.coral, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Intinn</span>
+          <div style={{ width: 38, height: 38, background: G.coral, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem" }}>🧠</div>
+          <span style={{ fontSize: "1.3rem", fontWeight: 900, background: G.coral, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>MindTrack</span>
         </div>
         {onLogin && onRegister && (
           <div style={{ display: "flex", gap: 12 }}>
             <button style={{ ...S.btnGhost(C.blue), padding: "10px 24px" }} onClick={onLogin}>Sign In</button>
-            <button style={{ ...S.btn(G.coral), padding: "10px 24px" }} onClick={onRegister}>Get Started →</button>
+            <button style={{ ...S.btn(G.coral), padding: "10px 24px" }} onClick={onRegister}>Get Started Free →</button>
           </div>
         )}
       </div>
@@ -406,7 +416,7 @@ function MiniNav({ onLogin, onRegister }) {
 
 function WelcomePage({ onLogin, onRegister }) {
   return (
-    <div style={{ background: C.bg, minHeight: "100vh" }}>
+    <div style={{ background: G.hero, minHeight: "100vh" }}>
       <MiniNav onLogin={onLogin} onRegister={onRegister} />
       <div style={{ display: "flex", height: 6 }}>
         {[G.coral, G.yellow, G.teal, G.blue, G.pink, G.green].map((g, i) => <div key={i} style={{ flex: 1, background: g }} />)}
@@ -420,7 +430,7 @@ function WelcomePage({ onLogin, onRegister }) {
             </div>
             <h1 style={{ ...S.h1, marginBottom: 24 }}>
               Track your{" "}
-              <span style={{ background: C.border, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>mind</span>
+              <span style={{ background: G.coral, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>mind</span>
               {", mood & "}
               <span style={{ background: G.blue, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>memory</span>.
             </h1>
@@ -428,14 +438,14 @@ function WelcomePage({ onLogin, onRegister }) {
               A daily cognitive health companion for patients, families, and caregivers — built to monitor, support, and celebrate brain health.
             </p>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <button style={{ ...S.btn(G.coral), padding: "18px 40px", fontSize: "1.1rem", borderRadius: 16, boxShadow: "0 8px 28px rgba(255,71,87,0.3)" }} onClick={onRegister}>Get Started →</button>
+              <button style={{ ...S.btn(G.coral), padding: "18px 40px", fontSize: "1.1rem", borderRadius: 16, boxShadow: "0 8px 28px rgba(255,71,87,0.3)" }} onClick={onRegister}>Get Started Free →</button>
               <button style={{ ...S.btnOutline(C.blue), padding: "18px 40px", fontSize: "1.1rem", borderRadius: 16 }} onClick={onLogin}>Sign In →</button>
             </div>
           </div>
           <div className="ai1" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             {[
               { icon: "🧠", title: "Brain Tasks", desc: "Daily cognitive challenges with real-time scoring", gradient: G.coral },
-              { icon: "📊", title: "Activity and diet", desc: "Track daily activities and support a healthy diet", gradient: G.yellow },
+              { icon: "📊", title: "Activity Log", desc: "Track healthy habits and daily activities", gradient: G.yellow },
               { icon: "🎵", title: "Music Therapy", desc: "Memory-triggering playlists for mood support", gradient: G.blue },
               { icon: "👨‍👩‍👧", title: "Family Dashboards", desc: "Role-based views for patients & carers", gradient: G.teal },
             ].map((f, i) => (
@@ -455,7 +465,7 @@ function WelcomePage({ onLogin, onRegister }) {
 
 function AuthLayout({ children, title, subtitle, emoji }) {
   return (
-    <div style={{ minHeight: "100vh", background: G.wbg, display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", background: G.hero, display: "flex", flexDirection: "column" }}>
       <MiniNav />
       <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "60px 40px" }}>
         <div style={{ width: "100%", maxWidth: 560 }}>
@@ -498,7 +508,7 @@ function RegisterPage({ onLogin, onVerify }) {
     }, 900);
   };
   return (
-    <AuthLayout title="Create Account" subtitle="Join Intinn today!" emoji="✨">
+    <AuthLayout title="Create Account" subtitle="Join MindTrack today!" emoji="✨">
       <button onClick={onLogin} style={{ background: "none", border: "none", color: C.muted, cursor: "pointer", fontSize: "1rem", fontFamily: "'Poppins',sans-serif", fontWeight: 600, marginBottom: 20, padding: 0 }}>← Back to Sign In</button>
       <div className={`ai1${shaking ? " shake" : ""}`} style={{ ...S.card(C.coral), padding: "36px 40px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -611,7 +621,7 @@ function VerifyPage({ email, suggestedToken, onSuccess, onBack }) {
         </FieldGroup>
         {error && <div style={{ ...S.error, marginBottom: 20 }}>⚠ {error}</div>}
         <button style={{ ...S.btn(G.teal), width: "100%", justifyContent: "center", padding: "18px", fontSize: "1.1rem", borderRadius: 14 }} onClick={go} disabled={loading}>
-          {loading ? <><Spinner /> Verifying…</> : "Verify & Enter Intinn ✓"}
+          {loading ? <><Spinner /> Verifying…</> : "Verify & Enter MindTrack ✓"}
         </button>
       </div>
       <button className="ai3" onClick={onBack} style={{ ...S.btnGhost(C.muted), display: "block", margin: "16px auto 0", padding: "12px 28px" }}>← Back to Sign In</button>
@@ -625,8 +635,8 @@ function VerifyPage({ email, suggestedToken, onSuccess, onBack }) {
 function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  const roleGrad = user.role === "patient" ? C.text : user.role === "family" ? C.text : C.text;
-  const roleColor = user.role === "patient" ? C.patientColor : user.role === "family" ? G.blue : G.coral;
+  const roleGrad = user.role === "patient" ? G.coral : user.role === "family" ? G.blue : G.teal;
+  const roleColor = user.role === "patient" ? C.patientColor : user.role === "family" ? C.familyColor : C.caregiverColor;
   const moodEmojis = [["😔", "Low"], ["😐", "Okay"], ["🙂", "Good"], ["😊", "Great"], ["🤩", "Amazing"]];
   const moodGradients = [G.coral, G.yellow, G.teal, G.blue, G.pink];
   return (
@@ -711,9 +721,12 @@ function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
 // ACTIVITIES
 // ═══════════════════════════════════════════════════════════════════════════════
 function ActivitiesScreen({ user }) {
+  const [logged, setLogged] = useState([]);
   const [note, setNote] = useState("");
   const [submittedNote, setSubmittedNote] = useState("");
-
+  const toggle = id => setLogged(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  const totalDone = logged.length;
+  const pct = Math.min((totalDone / ACTIVITY_OPTIONS.length) * 100, 100);
   return (
     <div style={S.page}>
       <div style={{ background: G.yellow, padding: "48px 48px 40px" }}>
@@ -722,70 +735,71 @@ function ActivitiesScreen({ user }) {
             <h1 style={{ ...S.h1, fontSize: "2.8rem", color: C.white, marginBottom: 6 }}>Daily Activities 🏃</h1>
             <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>Log what you've been up to today!</p>
           </div>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", height: 5 }}>
-        {[G.coral, G.yellow, G.teal, G.blue, G.pink, G.green].map((g, i) => (
-          <div key={i} style={{ flex: 1, background: g }} />
-        ))}
-      </div>
-
-      <div style={{ ...S.container, padding: "40px 48px 80px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
-
-          {/* How Did Today Feel? */}
-          <div className="ai2" style={S.card(C.sky)}>
-            <label style={{ ...S.label, color: C.text }}>How Did Today Feel?</label>
-            <textarea
-              placeholder="Write a few words about your day…"
-              value={note}
-              onChange={e => setNote(e.target.value)}
-              style={{ ...S.input(), minHeight: 20, resize: "none", marginBottom: 14, lineHeight: 1.7 }}
-            />
-            <button
-              style={{ ...S.btn(G.teal), width: "100%", justifyContent: "center" }}
-              onClick={() => { if (note.trim()) { setSubmittedNote(note.trim()); setNote(""); } }}
-            >
-              Save Note 💾
-            </button>
-            {submittedNote && (
-              <div style={{ ...S.success, marginTop: 14 }}>✅ "{submittedNote}"</div>
-            )}
-          </div>
-
-          {/* This Week */}
-          <div className="ai3" style={{ ...S.colourCard(G.wbg), display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-            <label style={{ ...S.label, color: "rgba(255,255,255,0.7)", marginBottom: 16 }}>This Week</label>
-            <div style={{ display: "flex", gap: 8, justifyContent: "space-between", marginTop: "auto" }}>
-              {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-                <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-                  <div style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: "50%",
-                    background: i < 5 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.2)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.2rem",
-                    color: i < 5 ? C.blue : "rgba(255,255,255,0.5)",
-                    fontWeight: 800,
-                  }}>
-                    {i < 5 ? "✓" : ""}
-                  </div>
-                  <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{d}</span>
-                </div>
-              ))}
+          <div className="ai1" style={{ background: "rgba(255,255,255,0.25)", borderRadius: 24, padding: "24px 36px", textAlign: "center", backdropFilter: "blur(10px)" }}>
+            <div style={{ fontSize: "4rem", fontWeight: 900, color: C.white, fontFamily: "'DM Mono',monospace", lineHeight: 1 }}>{totalDone}</div>
+            <div style={{ fontSize: "1rem", color: "rgba(255,255,255,0.85)", fontWeight: 600, marginTop: 4 }}>of {ACTIVITY_OPTIONS.length} done</div>
+            <div style={{ width: 160, height: 8, background: "rgba(255,255,255,0.3)", borderRadius: 4, marginTop: 12 }}>
+              <div style={{ height: "100%", width: `${pct}%`, background: C.white, borderRadius: 4, transition: "width 0.4s" }} />
             </div>
           </div>
-
+        </div>
+      </div>
+      <div style={{ display: "flex", height: 5 }}>
+        {[G.coral, G.yellow, G.teal, G.blue, G.pink, G.green].map((g, i) => <div key={i} style={{ flex: 1, background: g }} />)}
+      </div>
+      <div style={{ ...S.container, padding: "40px 48px 80px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 28 }}>
+          <div className="ai1" style={S.card()}>
+            <label style={S.label}>Tap to Log an Activity</label>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginTop: 12 }}>
+              {ACTIVITY_OPTIONS.map(a => {
+                const isLogged = logged.includes(a.id);
+                return (
+                  <button key={a.id} onClick={() => toggle(a.id)} style={{
+                    background: isLogged ? a.gradient : "#F9FAFB",
+                    border: `2px solid ${isLogged ? "transparent" : C.border}`,
+                    borderRadius: 20, padding: "24px 12px 20px", cursor: "pointer",
+                    textAlign: "center", fontFamily: "'Poppins',sans-serif",
+                    color: isLogged ? "#fff" : C.text,
+                    boxShadow: isLogged ? "0 6px 20px rgba(0,0,0,0.15)" : "0 2px 8px rgba(0,0,0,0.04)",
+                    transition: "all 0.2s",
+                  }}>
+                    <div style={{ fontSize: "2.4rem", marginBottom: 10 }}>{a.icon}</div>
+                    <div style={{ fontSize: "1rem", fontWeight: 700 }}>{a.label}</div>
+                    {isLogged && <div style={{ fontSize: "0.85rem", fontWeight: 700, marginTop: 6, opacity: 0.9 }}>✓ Done!</div>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div className="ai2" style={S.card(C.sky)}>
+              <label style={{ ...S.label, color: C.text }}>How Did Today Feel?</label>
+              <textarea placeholder="Write a few words about your day…" value={note} onChange={e => setNote(e.target.value)}
+                style={{ ...S.input(), minHeight: 130, resize: "none", marginBottom: 14, lineHeight: 1.7 }} />
+              <button style={{ ...S.btn(G.teal), width: "100%", justifyContent: "center" }}
+                onClick={() => { if (note.trim()) { setSubmittedNote(note.trim()); setNote(""); } }}>
+                Save Note 💾
+              </button>
+              {submittedNote && <div style={{ ...S.success, marginTop: 14 }}>✅ "{submittedNote}"</div>}
+            </div>
+            <div className="ai3" style={{ ...S.colourCard(G.blue) }}>
+              <label style={{ ...S.label, color: "rgba(255,255,255,0.7)", marginBottom: 16 }}>This Week</label>
+              <div style={{ display: "flex", gap: 8, justifyContent: "space-between" }}>
+                {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+                  <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 38, height: 38, borderRadius: "50%", background: i < 5 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", color: i < 5 ? C.blue : "rgba(255,255,255,0.5)", fontWeight: 800 }}>{i < 5 ? "✓" : ""}</div>
+                    <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{d}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 function randomAP({num, arr}){
   const correct = [];
   const numbersDone=[];
@@ -806,15 +820,7 @@ function randomAP({num, arr}){
 // TASKS
 // ═══════════════════════════════════════════════════════════════════════════════
 function TasksScreen({ role, onDone, todayScore }) {
-  const trial =  [{scrambled: [..."BREAD"].sort(()=>Math.random()-.5).join(''), answer: "BREAD"},
-  {scrambled: [..."MILK"].sort(()=>Math.random()-.5).join(''), answer: "MILK"},
-  {scrambled: [..."CLOUD"].sort(()=>Math.random()-.5).join(''), answer: "CLOUD"},
-  {scrambled: [..."CHAIR"].sort(()=>Math.random()-.5).join(''), answer: "CHAIR"},
-  {scrambled: [..."BRAIN"].sort(()=>Math.random()-.5).join(''), answer: "BRAIN"}, 
-  {scrambled: [..."APPLE"].sort(()=>Math.random()-.5).join(''), answer: "APPLE" }, 
-  { scrambled: [..."BANANA"].sort(()=>Math.random()-.5).join(''), answer: "BANANA" }, 
-  { scrambled:[..."LION"].sort(()=>Math.random()-.5).join(''), answer: "LION" }]; 
-  const WORDS = randomAP({num:3, arr:trial}); //{ scrambled:[..."CAT"].sort(()=>Math.random()-.5).join(''), answer: "CAT" }];
+  const WORDS = [{ scrambled: [..."APPLE"].sort(()=>Math.random()-.5).join(''), answer: "APPLE" }, { scrambled: [..."BANANA"].sort(()=>Math.random()-.5).join(''), answer: "BANANA" }, { scrambled:[..."LION"].sort(()=>Math.random()-.5).join(''), answer: "LION" }] //{ scrambled:[..."CAT"].sort(()=>Math.random()-.5).join(''), answer: "CAT" }];
   const correctalt =  randomAP({num: 4, arr: [1,2,3,4,5,"A","B","C","D"]});
   const correct =  randomAP({num: 6, arr: [1,2,3,4,5,6]});
   const [phase, setPhase] = useState("intro");
@@ -887,7 +893,7 @@ function TasksScreen({ role, onDone, todayScore }) {
             <div>
               <div style={{ ...S.colourCard(isGood ? G.green : G.yellow), textAlign: "center", marginBottom: 20 }}>
                 <div style={{ fontSize: "7rem", fontWeight: 900, fontFamily: "'DM Mono',monospace", lineHeight: 1 }}>{total}</div>
-                <div style={{ fontSize: "1.2rem", fontWeight: 600, opacity: 0.85, marginTop: 8 }}>Today's score</div>
+                <div style={{ fontSize: "1.2rem", fontWeight: 600, opacity: 0.85, marginTop: 8 }}>Today's Score</div>
                 <div style={{ marginTop: 16, fontSize: "1.05rem", fontWeight: 700, background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "12px 16px" }}>
                   {isGood ? "✅ Memory patterns are stable!" : "⚠ Consider chatting with your caregiver."}
                 </div>
@@ -903,9 +909,7 @@ function TasksScreen({ role, onDone, todayScore }) {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <div style={S.card(C.blue)}>
-              
                 <label style={{ ...S.label, color: C.blue }}>7-Day Trend</label>
-                {role === "patient" && !<FamilyView />}
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={MOCK_SCORES}>
                     <XAxis dataKey="day" stroke="#D1D5DB" tick={{ fontSize: 13, fill: C.muted, fontWeight: 600 }} />
@@ -1103,7 +1107,7 @@ function PatternTask({ correct,onDone }) {
               const idx = path.indexOf(n);
               return (
                 <button key={n} onClick={() => tap(n)} style={{ width: "100%", aspectRatio: "1", background: idx !== -1 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.2)", border: `3px solid ${idx !== -1 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)"}`, borderRadius: "50%", cursor: "pointer", fontSize: "1.3rem", fontWeight: 900, color: idx !== -1 ? C.teal : C.white, transition: "all 0.15s" }}>
-                  {idx !== -1 ? n : n}
+                  {idx !== -1 ? idx + 1 : n}
                 </button>
               );
             })}
@@ -1154,7 +1158,7 @@ function AlternatingTask({ correctalt,onDone }) {
               const idx = path.indexOf(n);
               return (
                 <button key={n} onClick={() => tap(n)} style={{ width: "100%", aspectRatio: "1", background: idx !== -1 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.2)", border: `3px solid ${idx !== -1 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)"}`, borderRadius: "50%", cursor: "pointer", fontSize: "1.3rem", fontWeight: 900, color: idx !== -1 ? C.teal : C.white, transition: "all 0.15s" }}>
-                  {idx !== -1 ? n : n}
+                  {idx !== -1 ? idx + 1 : n}
                 </button>
               );
             })}
@@ -1300,10 +1304,8 @@ function DietScreen({ role, meals, setMeals }) {
     setMealInput("");
   };
   const brainCount = meals.filter(m => BRAIN_FOODS.some(f => m.text.toLowerCase().includes(f.name.toLowerCase().split(" ")[0]))).length;
-  const filters = ["all", "breakfast", "lunch", "dinner","avoid"];
-  const filtered = filter === "all"
-  ? BRAIN_FOODS.filter(f => f.cat !== "avoid")
-  : BRAIN_FOODS.filter(f => f.cat === filter);
+  const filters = ["all", "omega3", "antioxidant", "bvitamin"];
+  const filtered = filter === "all" ? BRAIN_FOODS : BRAIN_FOODS.filter(f => f.cat === filter);
   const foodGradients = [G.coral, G.teal, G.blue, G.yellow, G.pink, G.green, G.coral, G.teal];
   return (
     <div style={S.page}>
@@ -1341,13 +1343,13 @@ function DietScreen({ role, meals, setMeals }) {
               {brainCount > 0 && <div style={{ ...S.success, marginTop: 16 }}>🧠 {brainCount} brain-healthy meal{brainCount > 1 ? "s" : ""} logged!</div>}
             </div>
             <div className="ai2" style={S.card(C.teal)}>
-              <label style={{ ...S.label, color: C.teal }}>Log your daily activities</label>
+              <label style={{ ...S.label, color: C.teal }}>Daily Habits</label>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 8 }}>
                 {[
-                  { key: "water", icon: "💧", label: "Hydration", gradient: G.teal },
+                  { key: "water", icon: "💧", label: "8 Glasses Water", gradient: G.teal },
                   { key: "exercise", icon: "🏃", label: "30 min Walk", gradient: G.coral },
-                  { key: "meditation", icon: "😴", label: "Sleep 7-8 hours", gradient: G.blue },
-                  { key: "vitamins", icon: "💊", label: "Medicine", gradient: G.pink },
+                  { key: "meditation", icon: "🧘", label: "Mindfulness", gradient: G.blue },
+                  { key: "vitamins", icon: "💊", label: "Supplements", gradient: G.pink },
                 ].map(h => (
                   <button key={h.key} onClick={() => setHabits(s => ({ ...s, [h.key]: !s[h.key] }))} style={{
                     background: habits[h.key] ? h.gradient : "#F9FAFB",
@@ -1374,7 +1376,7 @@ function DietScreen({ role, meals, setMeals }) {
             <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
               {filters.map(f => (
                 <Chip key={f}
-                  label={f === "bvitamin" ? "B Vitamin" : f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}
+                  label={f === "bvitamin" ? "B Vitamins" : f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}
                   active={filter === f} onClick={() => setFilter(f)}
                   color={C.orange} gradient={G.yellow}
                 />
@@ -1382,7 +1384,7 @@ function DietScreen({ role, meals, setMeals }) {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               {filtered.map((food, i) => (
-                  <div key={`${food.cat}-${food.benefit}`} style={{ background: C.white, border: `2px solid ${C.border}`, borderRadius: 16, padding: "18px 20px", overflow: "hidden", position: "relative" }}>
+                <div key={food.name} style={{ background: C.white, border: `2px solid ${C.border}`, borderRadius: 16, padding: "18px 20px", overflow: "hidden", position: "relative" }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 5, background: foodGradients[i % foodGradients.length] }} />
                   <span style={{ fontSize: "2rem" }}>{food.icon}</span>
                   <div style={{ fontSize: "1.05rem", fontWeight: 700, marginTop: 10 }}>{food.name}</div>
@@ -1443,8 +1445,7 @@ function MusicScreen({ role }) {
                 {languages.map(l => <Chip key={l} label={l} active={language === l} onClick={() => setLanguage(l)} color={C.pink} gradient={G.pink} />)}
               </div>
             </div>
-            {(role === "caregiver" || role 
-            === "family") && (
+            {(role === "caregiver" || role === "family") && (
               <div className="ai2" style={S.card(C.teal)}>
                 <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16 }}>
                   <label style={{ ...S.label, color: C.teal, marginBottom: 0 }}>Decade & Genre</label>
@@ -1494,20 +1495,9 @@ function MusicScreen({ role }) {
               <a href="https://open.spotify.com/playlist/37i9dQZF1DXb57FjYWz00c" target="_blank" rel="noreferrer" style={{ ...S.btn("linear-gradient(135deg,#1DB954,#1ED760)"), flex: 1, justifyContent: "center", textDecoration: "none", padding: "16px", fontSize: "1rem" }}>♫ Open in Spotify</a>
               <a href="https://music.youtube.com/playlist?list=RDCLAK5uy_k1Wu8QbZASiGVqr1wmie9NIYo38aBqscQ" target="_blank" rel="noreferrer" style={{ ...S.btn(G.coral), flex: 1, justifyContent: "center", textDecoration: "none", padding: "16px", fontSize: "1rem" }}>♫ Youtube Music</a>
             </div>
-             <>
-        <br></br>
-        <br></br>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>🏥 Alzheimer's Support Lines</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Memory Care Ireland — 01 800 1234</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 National Dementia Support — 1800 341 341</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Alzheimer Society of Ireland — 01 207 3800</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Dementia Ireland Helpline — 1800 100 500</p></>
           </div>
         </div>
-        
-       
       </div>
-      
       {showPlayer && playing && (
         <div style={{ position: "fixed", bottom: 32, left: "50%", transform: "translateX(-50%)", background: C.white, border: `2px solid ${C.border}`, borderRadius: 20, padding: "16px 24px", display: "flex", alignItems: "center", gap: 18, boxShadow: "0 16px 48px rgba(0,0,0,0.15)", zIndex: 150, minWidth: 500 }}>
           <div style={{ width: 50, height: 50, background: G.pink, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.4rem", animation: "pulse 1.5s infinite", flexShrink: 0 }}>♪</div>
@@ -1520,7 +1510,6 @@ function MusicScreen({ role }) {
               <button key={i} onClick={fn} style={{ background: "#F9FAFB", border: `2px solid ${C.border}`, borderRadius: 10, width: 44, height: 44, cursor: "pointer", fontSize: "1.1rem", fontWeight: 700, color: C.text }}>{icon}</button>
             ))}
           </div>
-          
         </div>
       )}
     </div>
