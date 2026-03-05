@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
 import Logo from './Logo1.png';
+import { Analytics } from "@vercel/analytics/react"
 const delay = ms => new Promise(
   resolve => setTimeout(resolve, ms)
 );
