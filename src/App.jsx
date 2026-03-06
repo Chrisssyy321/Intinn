@@ -255,7 +255,7 @@ function TopNav({ active, onNav, role, user, onLogout }) {
   const roleColor = role === "patient" ? C.patientColor : role === "family" ? C.familyColor : C.caregiverColor;
   const roleGrad = role === "patient" ? G.coral : role === "family" ? G.blue : G.teal;
   const items = role === "patient"
-    ? [{ id: "home", icon: "🏠", label: "Home" }, { id: "tasks", icon: "🧠", label: "Brain Tasks" }, { id: "activities", icon: "🏃", label: "Activities" }, { id: "music", icon: "🎵", label: "Music Therapy" }]
+    ? [{ id: "home", icon: "🏠", label: "Home" }, { id: "tasks", icon: "🧠", label: "Brain Tasks" }, { id: "activities", icon: "🏃", label: "Activities" }, { id: "music", icon: "🎵", label: "Music Therapy" },{ id: "help", icon: "🎵", label: "Helpline" }]
     : [{ id: "home", icon: "🏠", label: "Home" }, { id: "tasks", icon: "🧠", label: "Brain Tasks" }, { id: "diet", icon: "🥗", label: "Diet & Wellness" }, { id: "music", icon: "🎵", label: "Music Therapy" }];
   const [logoutConfirm, setLogoutConfirm] = useState(false);
   return (
@@ -354,6 +354,7 @@ export default function App() {
       {screen === "activities" && <ActivitiesScreen user={authUser} />}
       {screen === "diet" && <DietScreen role={authUser.role} meals={meals} setMeals={setMeals} />}
       {screen === "music" && <MusicScreen role={authUser.role} />}
+      {screen === "help" && <HelpScreen role={authUser.role} />}
     </>
   );
 }
@@ -497,7 +498,7 @@ function RegisterPage({ onLogin, onVerify }) {
     }, 900);
   };
   return (
-    <AuthLayout title="Create Account" subtitle="Join Intinn today!" emoji="✨">
+    <AuthLayout tiltle="Create Account" subtitle="Join Intinn today!" emoji="✨">
       <button onClick={onLogin} style={{ background: "none", border: "none", color: C.muted, cursor: "pointer", fontSize: "1rem", fontFamily: "'Poppins',sans-serif", fontWeight: 600, marginBottom: 20, padding: 0 }}>← Back to Sign In</button>
       <div className={`ai1${shaking ? " shake" : ""}`} style={{ ...S.card(C.coral), padding: "36px 40px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -882,26 +883,40 @@ function TasksScreen({ role, onDone, todayScore }) {
         {phase === "alternating" && <AlternatingTask correctalt={correctalt} onDone={s => finish("alternating", s)} />}
         {phase === "scramble" && <ScrambleTask WORDS={WORDS} onDone={s => finish("scramble", s)} />}
         {phase === "results" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }} className="ai">
+          <div style={{ display: "grid", gridTemplateColumns: role === "patient" ? "1fr" : "1fr 1fr", gap: 28 }} className="ai">
             <div>
-              <div style={{ ...S.colourCard(isGood ? G.green : G.yellow), textAlign: "center", marginBottom: 20 }}>
-                <div style={{ fontSize: "7rem", fontWeight: 900, fontFamily: "'DM Mono',monospace", lineHeight: 1 }}>{total}</div>
-                <div style={{ fontSize: "1.2rem", fontWeight: 600, opacity: 0.85, marginTop: 8 }}>Today's Score</div>
-                <div style={{ marginTop: 16, fontSize: "1.05rem", fontWeight: 700, background: "rgba(255,255,255,0.2)", borderRadius: 12, padding: "12px 16px" }}>
-                  {isGood ? "✅ Memory patterns are stable!" : "⚠ Consider chatting with your caregiver."}
+              <div style={{
+                ...S.colourCard(isGood ? G.green : G.yellow),
+                textAlign: "center",
+                padding: "60px 40px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                ...(role === "patient" ? { maxWidth: 500, margin: "0 auto" } : {}),
+              }}>
+                {(role === "caregiver" || role === "family") && (
+                  <div style={{ fontSize: "7rem", fontWeight: 900, fontFamily: "'DM Mono',monospace", lineHeight: 1 }}>{total}</div>
+                )}
+                {(role === "caregiver" || role === "family") && (
+                  <div style={{ fontSize: "1.2rem", fontWeight: 600, opacity: 0.85, marginTop: 18 }}>Today's Score</div>
+                )}
+                <div style={{fontSize: "1.4rem", fontWeight: 700, background: "rgba(255,255,255,0.2)",borderRadius: 600, padding: "14px 32px",}}>Well Done!</div>
+              </div>
+              {(role === "caregiver" || role === "family") && (
+                <div style={{ display: "flex", gap: 14, marginTop: 20 }}>
+                  {[["Memory", scores.memory, G.coral], ["Pattern", scores.pattern, G.teal], ["Alternating", scores.alternating, G.pink], ["Scramble", scores.scramble, G.blue]].map(([lbl, val, g]) => (
+                    <div key={lbl} style={{ ...S.colourCard(g), flex: 1, textAlign: "center", padding: "20px 12px" }}>
+                      <div style={{ fontSize: "2rem", fontWeight: 900, fontFamily: "'DM Mono',monospace" }}>{val * 10}</div>
+                      <div style={{ fontSize: "0.85rem", opacity: 0.85, fontWeight: 600, marginTop: 4 }}>{lbl}</div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-              <div style={{ display: "flex", gap: 14 }}>
-                {[["Memory", scores.memory, G.coral], ["Pattern", scores.pattern, G.teal], ["Alternating", scores.alternating, G.pink],["Scramble", scores.scramble, G.blue]].map(([lbl, val, g]) => (
-                  <div key={lbl} style={{ ...S.colourCard(g), flex: 1, textAlign: "center", padding: "20px 12px" }}>
-                    <div style={{ fontSize: "2rem", fontWeight: 900, fontFamily: "'DM Mono',monospace" }}>{val * 10}</div>
-                    <div style={{ fontSize: "0.85rem", opacity: 0.85, fontWeight: 600, marginTop: 4 }}>{lbl}</div>
-                  </div>
-                ))}
-              </div>
+              )}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <div style={S.card(C.blue)}>
+
+            {(role === "caregiver" || role === "family") && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 <label style={{ ...S.label, color: C.blue }}>7-Day Trend</label>
                 <ResponsiveContainer width="100%" height={200}>
                   <LineChart data={MOCK_SCORES}>
@@ -912,12 +927,9 @@ function TasksScreen({ role, onDone, todayScore }) {
                     <Line type="monotone" dataKey="score" stroke={C.blue} strokeWidth={3} dot={{ fill: C.blue, r: 6, stroke: C.white, strokeWidth: 2 }} />
                   </LineChart>
                 </ResponsiveContainer>
+                {role === "caregiver" && <CaregiverCard />}
               </div>
-              {role === "caregiver" && <CaregiverCard />}
-              <button style={{ ...S.btn(G.coral), width: "100%", justifyContent: "center", padding: "18px" }} onClick={() => { setPhase("intro"); setScores({ memory: 0, pattern: 0, alternating: 0, scramble: 0 }); }}>
-                Try Again 🔄
-              </button>
-            </div>
+            )}
           </div>
         )}
       </div>
@@ -1389,12 +1401,68 @@ function DietScreen({ role, meals, setMeals }) {
             </div>
           </div>
         </div>
-      </div>
+    </div>
     </div>
   );
 }
+function HelpScreen({ role }) {
+  
+  return(
+<div style={{ ...S.page, padding: "48px" }}>
+  <div style={{ maxWidth: 800, margin: "0 auto" }}>
+    <div style={{ ...S.colourCard(G.blue), marginBottom: 28, textAlign: "center" }}>
+      <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🏥</div>
+      <h2 style={{ fontSize: "1.8rem", fontWeight: 800, marginBottom: 6 }}>Alzheimer's & Dementia Support</h2>
+      <p style={{ opacity: 0.85, fontSize: "1rem" }}>Helplines available across Ireland for patients, families & carers</p>
+    </div>
 
-// ═══════════════════════════════════════════════════════════════════════════════
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      {[
+        { name: "Alzheimer Society of Ireland", number: "1800 341 341", icon: "🧠", gradient: G.coral },
+        { name: "HSE Live (Health & Dementia)", number: "1800 700 700", icon: "🏥", gradient: G.teal },
+        { name: "National Dementia Support", number: "1800 341 341", icon: "📞", gradient: G.yellow },
+        { name: "Memory Care Ireland", number: "01 800 1234", icon: "💜", gradient: G.pink },
+        { name: "SeniorLine (Older People)", number: "1800 80 45 91", icon: "👴", gradient: G.green },
+        { name: "ALONE National Support", number: "0818 222 024", icon: "🤝", gradient: G.blue },
+        { name: "Dementia Ireland Helpline", number: "1800 100 500", icon: "🧩", gradient: G.teal },
+        { name: "Aware (Carer Mental Health)", number: "1800 80 48 48", icon: "💚", gradient: G.yellow },
+      ].map((line, i) => (
+        <div key={i} style={{
+          ...S.card(),
+          padding: "22px 24px",
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          overflow: "hidden",
+          position: "relative",
+        }}>
+          <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 5, background: line.gradient }} />
+          <div style={{
+            width: 48, height: 48, background: line.gradient, borderRadius: 14,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "1.4rem", flexShrink: 0,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+          }}>{line.icon}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: "0.95rem", fontWeight: 700, color: C.text }}>{line.name}</div>
+            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: C.muted, fontFamily: "'DM Mono',monospace", marginTop: 4 }}>
+              📞 {line.number}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{ ...S.colourCard(G.green), marginTop: 24, textAlign: "center", padding: "24px 32px" }}>
+      <p style={{ fontSize: "1rem", fontWeight: 600, opacity: 0.9 }}>
+        💬 You are not alone — support is just a phone call away.
+      </p>
+    </div>
+  </div>
+</div>
+   ); 
+}
+// // // ═══════════════════════════════════════════════════════════════════════════════
 // MUSIC
 // ═══════════════════════════════════════════════════════════════════════════════
 function MusicScreen({ role }) {
@@ -1491,14 +1559,9 @@ function MusicScreen({ role }) {
               <a href="https://open.spotify.com/playlist/37i9dQZF1DXb57FjYWz00c" target="_blank" rel="noreferrer" style={{ ...S.btn("linear-gradient(135deg,#1DB954,#1ED760)"), flex: 1, justifyContent: "center", textDecoration: "none", padding: "16px", fontSize: "1rem" }}>♫ Open in Spotify</a>
               <a href="https://music.youtube.com/playlist?list=RDCLAK5uy_k1Wu8QbZASiGVqr1wmie9NIYo38aBqscQ" target="_blank" rel="noreferrer" style={{ ...S.btn(G.coral), flex: 1, justifyContent: "center", textDecoration: "none", padding: "16px", fontSize: "1rem" }}>♫ Youtube Music</a>
             </div>
-             <>
-        <br></br>
-        <br></br>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>🏥 Alzheimer's Support Lines</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Memory Care Ireland — 01 800 1234</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 National Dementia Support — 1800 341 341</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Alzheimer Society of Ireland — 01 207 3800</p>
-        <p style={{ ...S.muted, fontSize: "1.1rem" }}>📍 Dementia Ireland Helpline — 1800 100 500</p></>
+          
+    
+       
           </div>
         </div>
         
