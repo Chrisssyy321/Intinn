@@ -681,43 +681,62 @@ function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
           <div className="ai2" style={S.card()}>
             <label style={S.label}>Daily Check-In Sliders</label>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 40, marginTop: 12 }}>
-              <EmojiSlider label="Energy" value={checkIn.energy} onChange={v => setCheckIn(c => ({ ...c, energy: v }))} icon="⚡" color={C.teal} gradient={G.yellow} />
-              <EmojiSlider label="Sleep" value={checkIn.sleep} onChange={v => setCheckIn(c => ({ ...c, sleep: v }))} icon="😴" color={C.sky} gradient={G.teal} />
-              <EmojiSlider label="Focus" value={checkIn.focus} onChange={v => setCheckIn(c => ({ ...c, focus: v }))} icon="🎯" color={C.violet} gradient={G.blue} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 0, marginTop: 5 }}>
+              {[
+                { label: "Energy", icon: "⚡", key: "energy", color: C.teal,   gradient: G.yellow },
+                { label: "Sleep",  icon: "😴", key: "sleep",  color: C.sky,    gradient: G.teal   },
+                { label: "Focus",  icon: "🎯", key: "focus",  color: C.violet, gradient: G.blue   },
+              ].map(({ label, icon, key, color, gradient }) => (
+                <div key={key} style={{ marginBottom: -12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                    <span style={{ fontSize: "1rem" }}>{icon}</span>
+                    <span style={{ fontSize: "0.88rem", fontWeight: 700, color: C.text, fontFamily: "'Poppins',sans-serif" }}>
+                      {label}
+                    </span>
+                  </div>
+                  <div style={{ marginTop: -8, overflow: "hidden" }}>
+                    <EmojiSlider
+                      label={label}
+                      value={checkIn[key]}
+                      onChange={v => setCheckIn(c => ({ ...c, [key]: v }))}
+                      color={color}
+                      gradient={gradient}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           <div className="ai2" style={S.card(C.teal)}>
-              <label style={{ ...S.label, color: C.teal }}>Log your daily activities</label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 8 }}>
-                {[
-                  { key: "water", icon: "💧", label: "Hydration", gradient: G.teal },
-                  { key: "exercise", icon: "🏃", label: "30 min Walk", gradient: G.coral },
-                  { key: "meditation", icon: "😴", label: "Sleep 7-8 hours", gradient: G.blue },
-                  { key: "vitamins", icon: "💊", label: "Medicine", gradient: G.pink },
-                ].map(h => (
-                  <button key={h.key} onClick={() => setHabits(s => ({ ...s, [h.key]: !s[h.key] }))} style={{
-                    background: habits[h.key] ? h.gradient : "#F9FAFB",
-                    border: `2px solid ${habits[h.key] ? "transparent" : C.border}`,
-                    borderRadius: 16, padding: "20px 16px", cursor: "pointer", textAlign: "left",
-                    fontFamily: "'Poppins',sans-serif",
-                    color: habits[h.key] ? C.white : C.text,
-                    boxShadow: habits[h.key] ? "0 4px 16px rgba(0,0,0,0.12)" : "none",
-                    transition: "all 0.2s",
-                  }}>
-                    <div style={{ fontSize: "2rem" }}>{h.icon}</div>
-                    <div style={{ fontSize: "1rem", fontWeight: 700, marginTop: 8 }}>{h.label}</div>
-                    {habits[h.key] && <div style={{ fontSize: "0.85rem", fontWeight: 700, marginTop: 4, opacity: 0.9 }}>✓ Done!</div>}
-                  </button>
-                ))}
-              </div>
+            <label style={{ ...S.label, color: C.teal }}>Log your daily activities</label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 8 }}>
+              {[
+                { key: "water",      icon: "💧", label: "Hydration",       gradient: G.teal },
+                { key: "exercise",   icon: "🏃", label: "30 min Walk",     gradient: G.coral },
+                { key: "meditation", icon: "😴", label: "Sleep 7-8 hours", gradient: G.blue },
+                { key: "vitamins",   icon: "💊", label: "Medicine",        gradient: G.pink },
+              ].map(h => (
+                <button key={h.key} onClick={() => setHabits(s => ({ ...s, [h.key]: !s[h.key] }))} style={{
+                  background: habits[h.key] ? h.gradient : "#F9FAFB",
+                  border: `2px solid ${habits[h.key] ? "transparent" : C.border}`,
+                  borderRadius: 16, padding: "20px 16px", cursor: "pointer", textAlign: "left",
+                  fontFamily: "'Poppins',sans-serif",
+                  color: habits[h.key] ? C.white : C.text,
+                  boxShadow: habits[h.key] ? "0 4px 16px rgba(0,0,0,0.12)" : "none",
+                  transition: "all 0.2s",
+                }}>
+                  <div style={{ fontSize: "2rem" }}>{h.icon}</div>
+                  <div style={{ fontSize: "1rem", fontWeight: 700, marginTop: 8 }}>{h.label}</div>
+                  {habits[h.key] && <div style={{ fontSize: "0.85rem", fontWeight: 700, marginTop: 4, opacity: 0.9 }}>✓ Done!</div>}
+                </button>
+              ))}
             </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 // ═══════════════════════════════════════════════════════════════════════════════
 // ACTIVITIES
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1337,10 +1356,10 @@ function FamilyView() {
 // DIET
 // ═══════════════════════════════════════════════════════════════════════════════
 const MEDICINES = [
-  { id: "med1", name: "Donepezil (Aricept)", dose: "10mg", time: "Morning", icon: "💊" },
-  { id: "med2", name: "Memantine", dose: "20mg", time: "Morning", icon: "💊" },
-  { id: "med3", name: "Vitamin D3", dose: "1000 IU", time: "With breakfast", icon: "🌟" },
-  { id: "med4", name: "Omega-3", dose: "1000mg", time: "Evening", icon: "🐟" },
+  { id: "med1", name: "Donepezil", dose: "10mg", time: "Post Breakfast", icon: "🌟" },
+  { id: "med2", name: "Memantine", dose: "20mg", time: "Post Lunch", icon: "💊" },
+  { id: "med3", name: "Quetiapine", dose: "10mg", time: "Post Dinner", icon: "🌙" },
+  { id: "med4", name: "Donamem Forte", dose: "5mg", time: "Post Dinner", icon: "🌙" },
 ];
 
 function DietScreen({ role, meals, setMeals }) {
