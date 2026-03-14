@@ -840,7 +840,7 @@ function TasksScreen({ role, onDone, todayScore }) {
   };
   const total = Math.round((scores.memory + scores.pattern + scores.scramble + scores.alternating) / 4 * 10);
   const isGood = total > 70;
-  if (role === "family") return <FamilyView />;
+  if (role === "family" || role === "caregiver") return <FamilyView />;
   return (
     <div style={S.page}>
       <div style={{ background: "linear-gradient(135deg, #7B2FBE 0%, #4361EE 100%)", padding: "48px 48px 40px" }}>
@@ -1280,7 +1280,7 @@ function FamilyView() {
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            
+
             <div className="ai2" style={S.card(C.sky)}>
               <label style={{ ...S.label, color: C.sky }}>Caregiver Notes</label>
               <p style={{ ...S.body, fontStyle: "italic", color: C.muted, fontSize: "1.05rem" }}>
@@ -1288,27 +1288,50 @@ function FamilyView() {
               </p>
             </div>
           </div>
-          <div className="ai2" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {[
-              { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "📊" },
-              { label: "Memory Task Avg Score", value: "70", gradient: G.blue, icon: "🌸" },
-              { label: "Week Avg Score", value: "72", gradient: G.blue, icon: "🔢" },
-              { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "🔄️" },
-              { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "📝" },
-              { label: "Tasks Done", value: "5/7", gradient: G.green, icon: "✅" },
 
-            ].map(s => (
-              <div key={s.label} style={{ ...S.colourCard(s.gradient), textAlign: "center", padding: "22px 20px" }}>
-                <div style={{ fontSize: "1.8rem", marginBottom: 6 }}>{s.icon}</div>
-                <div style={{ fontSize: "2rem", fontWeight: 900, fontFamily: "'DM Mono',monospace" }}>{s.value}</div>
-                <div style={{ fontSize: "0.88rem", opacity: 0.85, fontWeight: 600, marginTop: 4 }}>{s.label}</div>
-              </div>
-            ))}
+          {/* RIGHT COLUMN — Brain Foods style */}
+          <div className="ai2" style={{ ...S.card(C.blue), display: "flex", flexDirection: "column", gap: 16 }}>
+
+            {/* Header row */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.78rem", fontWeight: 800, color: C.orange, letterSpacing: "0.09em", textTransform: "uppercase" }}>
+                Brain Scores
+              </span>
+              <Badge color={C.teal}>Weekly View</Badge>
+            </div>
+
+            {/* 2-col score cards */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              {[
+                { title: "Memory",     sub: "Task avg score", value: "70", topColor: C.teal },
+                { title: "Pattern",   sub: "Task avg score",       value: "72", topColor: C.pink },
+                { title: "Alternating",      sub: "Task avg score",       value: "73", topColor: C.blue },
+                { title: "Scramble", sub: "Task avg score",       value: "73", topColor: C.purple },
+                { title: "Overall",    sub: "Week avg",       value: "73", topColor: C.sky },
+                { title: "Tasks Done", sub: "Completed",      value: "5 / 7", topColor: C.green },
+              ].map(({ title, sub, value, topColor }) => (
+                <div key={title} style={{
+                  background: C.white,
+                  borderRadius: 12,
+                  border: `1.5px solid ${C.border}`,
+                  borderTop: `3.5px solid ${topColor}`,
+                  padding: "14px 12px",
+                }}>
+                  <div style={{ fontSize: "1.5rem", fontWeight: 900, fontFamily: "'Poppins', sasn-seriff", color: C.dark, marginBottom: 2 }}>
+                    {value}
+                  </div>
+                  <div style={{ fontSize: "0.9rem", fontWeight: 700, color: C.dark }}>{title}</div>
+                  <div style={{ fontSize: "0.78rem", color: C.teal, fontWeight: 600 }}>{sub}</div>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </div>
-   </div>
-  );}
+    </div>
+  );
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // DIET
