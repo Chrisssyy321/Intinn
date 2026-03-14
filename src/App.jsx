@@ -628,6 +628,7 @@ function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
   const roleGrad = user.role === "patient" ? C.text : user.role === "family" ? C.text : C.text;
   const roleColor = user.role === "patient" ? C.patientColor : user.role === "family" ? G.blue : G.coral;
   const moodEmojis = [["😔", "Low"], ["😐", "Okay"], ["🙂", "Good"], ["😊", "Great"], ["🤩", "Amazing"]];
+  const [habits, setHabits] = useState({ water: false, exercise: false, meditation: false, vitamins: false });
   const moodGradients = [G.coral, G.yellow, G.teal, G.blue, G.pink];
   return (
     <div style={S.page}>
@@ -677,7 +678,7 @@ function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
             })}
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
           <div className="ai2" style={S.card()}>
             <label style={S.label}>Daily Check-In Sliders</label>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 40, marginTop: 12 }}>
@@ -686,21 +687,31 @@ function HomeScreen({ user, checkIn, setCheckIn, onStart }) {
               <EmojiSlider label="Focus" value={checkIn.focus} onChange={v => setCheckIn(c => ({ ...c, focus: v }))} icon="🎯" color={C.violet} gradient={G.blue} />
             </div>
           </div>
-          <div className="ai3" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {[
-              { label: "Energy", value: checkIn.energy, gradient: G.yellow, icon: "⚡" },
-              { label: "Sleep", value: checkIn.sleep, gradient: G.teal, icon: "😴" },
-              { label: "Focus", value: checkIn.focus, gradient: G.blue, icon: "🎯" },
-            ].map(s => (
-              <div key={s.label} style={{ ...S.colourCard(s.gradient), display: "flex", alignItems: "center", gap: 16, padding: "18px 24px" }}>
-                <span style={{ fontSize: "1.6rem" }}>{s.icon}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "0.78rem", fontWeight: 700, opacity: 0.8, letterSpacing: "0.08em", textTransform: "uppercase" }}>{s.label}</div>
-                </div>
-                <div style={{ fontSize: "2rem", fontWeight: 900, fontFamily: "'DM Mono',monospace" }}>{s.value}/10</div>
+          <div className="ai2" style={S.card(C.teal)}>
+              <label style={{ ...S.label, color: C.teal }}>Log your daily activities</label>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 8 }}>
+                {[
+                  { key: "water", icon: "💧", label: "Hydration", gradient: G.teal },
+                  { key: "exercise", icon: "🏃", label: "30 min Walk", gradient: G.coral },
+                  { key: "meditation", icon: "😴", label: "Sleep 7-8 hours", gradient: G.blue },
+                  { key: "vitamins", icon: "💊", label: "Medicine", gradient: G.pink },
+                ].map(h => (
+                  <button key={h.key} onClick={() => setHabits(s => ({ ...s, [h.key]: !s[h.key] }))} style={{
+                    background: habits[h.key] ? h.gradient : "#F9FAFB",
+                    border: `2px solid ${habits[h.key] ? "transparent" : C.border}`,
+                    borderRadius: 16, padding: "20px 16px", cursor: "pointer", textAlign: "left",
+                    fontFamily: "'Poppins',sans-serif",
+                    color: habits[h.key] ? C.white : C.text,
+                    boxShadow: habits[h.key] ? "0 4px 16px rgba(0,0,0,0.12)" : "none",
+                    transition: "all 0.2s",
+                  }}>
+                    <div style={{ fontSize: "2rem" }}>{h.icon}</div>
+                    <div style={{ fontSize: "1rem", fontWeight: 700, marginTop: 8 }}>{h.label}</div>
+                    {habits[h.key] && <div style={{ fontSize: "0.85rem", fontWeight: 700, marginTop: 4, opacity: 0.9 }}>✓ Done!</div>}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
         </div>
       </div>
     </div>
@@ -1269,6 +1280,7 @@ function FamilyView() {
                 </LineChart>
               </ResponsiveContainer>
             </div>
+            
             <div className="ai2" style={S.card(C.sky)}>
               <label style={{ ...S.label, color: C.sky }}>Caregiver Notes</label>
               <p style={{ ...S.body, fontStyle: "italic", color: C.muted, fontSize: "1.05rem" }}>
@@ -1279,9 +1291,12 @@ function FamilyView() {
           <div className="ai2" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
               { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "📊" },
+              { label: "Memory Task Avg Score", value: "70", gradient: G.blue, icon: "🌸" },
+              { label: "Week Avg Score", value: "72", gradient: G.blue, icon: "🔢" },
+              { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "🔄️" },
+              { label: "Week Avg Score", value: "73", gradient: G.blue, icon: "📝" },
               { label: "Tasks Done", value: "5/7", gradient: G.green, icon: "✅" },
-              { label: "Sleep Avg", value: "7.2", gradient: G.teal, icon: "😴" },
-              { label: "Mood Trend", value: "↗ Up", gradient: G.pink, icon: "😊" },
+
             ].map(s => (
               <div key={s.label} style={{ ...S.colourCard(s.gradient), textAlign: "center", padding: "22px 20px" }}>
                 <div style={{ fontSize: "1.8rem", marginBottom: 6 }}>{s.icon}</div>
@@ -1292,28 +1307,52 @@ function FamilyView() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+   </div>
+  );}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // DIET
 // ═══════════════════════════════════════════════════════════════════════════════
+const MEDICINES = [
+  { id: "med1", name: "Donepezil (Aricept)", dose: "10mg", time: "Morning", icon: "💊" },
+  { id: "med2", name: "Memantine", dose: "20mg", time: "Morning", icon: "💊" },
+  { id: "med3", name: "Vitamin D3", dose: "1000 IU", time: "With breakfast", icon: "🌟" },
+  { id: "med4", name: "Omega-3", dose: "1000mg", time: "Evening", icon: "🐟" },
+];
+
 function DietScreen({ role, meals, setMeals }) {
   const [mealInput, setMealInput] = useState("");
   const [filter, setFilter] = useState("all");
-  const [habits, setHabits] = useState({ water: false, exercise: false, meditation: false, vitamins: false });
+  const [trackFilter, setTrackFilter] = useState("medicines");
+  const [checked, setChecked] = useState({});
+  const [waterGlasses, setWaterGlasses] = useState(0);
+  const [sleepHours, setSleepHours] = useState(0);
+
+  // ── Meal helpers ───────────────────────────────────────────
   const addMeal = () => {
     if (!mealInput.trim()) return;
-    setMeals(m => [...m, { text: mealInput.trim(), time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }]);
+    setMeals(m => [...m, {
+      text: mealInput.trim(),
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    }]);
     setMealInput("");
   };
-  const brainCount = meals.filter(m => BRAIN_FOODS.some(f => m.text.toLowerCase().includes(f.name.toLowerCase().split(" ")[0]))).length;
-  const filters = ["all", "breakfast", "lunch", "dinner","avoid"];
+
+  const brainCount = meals.filter(m =>
+    BRAIN_FOODS.some(f => m.text.toLowerCase().includes(f.name.toLowerCase().split(" ")[0]))
+  ).length;
+  const filters = ["all", "breakfast", "lunch", "dinner", "avoid"];
   const filtered = filter === "all"
-  ? BRAIN_FOODS.filter(f => f.cat !== "avoid")
-  : BRAIN_FOODS.filter(f => f.cat === filter);
+    ? BRAIN_FOODS.filter(f => f.cat !== "avoid")
+    : BRAIN_FOODS.filter(f => f.cat === filter);
   const foodGradients = [G.coral, G.teal, G.blue, G.yellow, G.pink, G.green, G.coral, G.teal];
+
+  const badgeText = trackFilter === "medicines"
+    ? `${Object.values(checked).filter(Boolean).length} / ${MEDICINES.length} taken`
+    : trackFilter === "water"
+    ? `${waterGlasses} / 8 glasses`
+    : `${sleepHours} hrs logged`;
+
   return (
     <div style={S.page}>
       <div style={{ background: G.green, padding: "48px 48px 40px" }}>
@@ -1324,17 +1363,30 @@ function DietScreen({ role, meals, setMeals }) {
           </div>
         </div>
       </div>
+
       <div style={{ display: "flex", height: 5 }}>
-        {[G.coral, G.yellow, G.teal, G.blue, G.pink, G.green].map((g, i) => <div key={i} style={{ flex: 1, background: g }} />)}
+        {[G.coral, G.yellow, G.teal, G.blue, G.pink, G.green].map((g, i) => (
+          <div key={i} style={{ flex: 1, background: g }} />
+        ))}
       </div>
+
       <div style={{ ...S.container, padding: "40px 48px 80px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 }}>
+
+          {/* ── LEFT COLUMN ── */}
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+            {/* Log a Meal */}
             <div className="ai1" style={S.card(C.green)}>
               <label style={{ ...S.label, color: C.green }}>Log a Meal</label>
               <div style={{ display: "flex", gap: 12 }}>
-                <input value={mealInput} onChange={e => setMealInput(e.target.value)} onKeyDown={e => e.key === "Enter" && addMeal()}
-                  placeholder="e.g. Grilled salmon with spinach" style={{ ...S.input(), flex: 1 }} />
+                <input
+                  value={mealInput}
+                  onChange={e => setMealInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && addMeal()}
+                  placeholder="e.g. Grilled salmon with spinach"
+                  style={{ ...S.input(), flex: 1 }}
+                />
                 <button onClick={addMeal} style={{ ...S.btn(G.green), padding: "16px 22px", fontSize: "1.4rem", borderRadius: 12, flexShrink: 0 }}>+</button>
               </div>
               {meals.length > 0 && (
@@ -1347,34 +1399,145 @@ function DietScreen({ role, meals, setMeals }) {
                   ))}
                 </div>
               )}
-              {brainCount > 0 && <div style={{ ...S.success, marginTop: 16 }}>🧠 {brainCount} brain-healthy meal{brainCount > 1 ? "s" : ""} logged!</div>}
+              {brainCount > 0 && (
+                <div style={{ ...S.success, marginTop: 16 }}>🧠 {brainCount} brain-healthy meal{brainCount > 1 ? "s" : ""} logged!</div>
+              )}
             </div>
+
+            {/* Daily Tracking */}
             <div className="ai2" style={S.card(C.teal)}>
-              <label style={{ ...S.label, color: C.teal }}>Log your daily activities</label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+                <label style={{ ...S.label, color: C.teal, marginBottom: 0 }}>Daily Tracking</label>
+                <GBadge gradient={G.teal}>{badgeText}</GBadge>
+              </div>
+
+              {/* Tabs */}
+              <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
                 {[
-                  { key: "water", icon: "💧", label: "Hydration", gradient: G.teal },
-                  { key: "exercise", icon: "🏃", label: "30 min Walk", gradient: G.coral },
-                  { key: "meditation", icon: "😴", label: "Sleep 7-8 hours", gradient: G.blue },
-                  { key: "vitamins", icon: "💊", label: "Medicine", gradient: G.pink },
-                ].map(h => (
-                  <button key={h.key} onClick={() => setHabits(s => ({ ...s, [h.key]: !s[h.key] }))} style={{
-                    background: habits[h.key] ? h.gradient : "#F9FAFB",
-                    border: `2px solid ${habits[h.key] ? "transparent" : C.border}`,
-                    borderRadius: 16, padding: "20px 16px", cursor: "pointer", textAlign: "left",
-                    fontFamily: "'Poppins',sans-serif",
-                    color: habits[h.key] ? C.white : C.text,
-                    boxShadow: habits[h.key] ? "0 4px 16px rgba(0,0,0,0.12)" : "none",
-                    transition: "all 0.2s",
-                  }}>
-                    <div style={{ fontSize: "2rem" }}>{h.icon}</div>
-                    <div style={{ fontSize: "1rem", fontWeight: 700, marginTop: 8 }}>{h.label}</div>
-                    {habits[h.key] && <div style={{ fontSize: "0.85rem", fontWeight: 700, marginTop: 4, opacity: 0.9 }}>✓ Done!</div>}
-                  </button>
+                  { key: "medicines", label: "Medicines 💊" },
+                  { key: "water",     label: "Hydration 💧" },
+                  { key: "sleep",     label: "Sleep 😴" },
+                ].map(t => (
+                  <Chip key={t.key} label={t.label} active={trackFilter === t.key}
+                    onClick={() => setTrackFilter(t.key)} color={C.teal} gradient={G.teal} />
                 ))}
               </div>
+
+              {/* ── Medicines ── */}
+              {trackFilter === "medicines" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {MEDICINES.map(med => (
+                    <button key={med.id} onClick={() => setChecked(s => ({ ...s, [med.id]: !s[med.id] }))}
+                      style={{
+                        display: "flex", alignItems: "center", gap: 14,
+                        background: checked[med.id] ? G.teal : "#F9FAFB",
+                        border: `2px solid ${checked[med.id] ? "transparent" : C.border}`,
+                        borderRadius: 14, padding: "14px 18px", cursor: "pointer",
+                        fontFamily: "'Poppins',sans-serif", textAlign: "left",
+                        color: checked[med.id] ? C.white : C.text,
+                        transition: "all 0.2s",
+                        boxShadow: checked[med.id] ? "0 4px 14px rgba(0,0,0,0.1)" : "none",
+                      }}>
+                      <div style={{
+                        width: 26, height: 26, borderRadius: 8, flexShrink: 0,
+                        border: `2px solid ${checked[med.id] ? "rgba(255,255,255,0.6)" : C.border}`,
+                        background: checked[med.id] ? "rgba(255,255,255,0.25)" : C.white,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "0.85rem", fontWeight: 900,
+                      }}>
+                        {checked[med.id] ? "✓" : ""}
+                      </div>
+                      <span style={{ fontSize: "1.4rem" }}>{med.icon}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: "0.95rem", fontWeight: 700 }}>{med.name}</div>
+                        <div style={{ fontSize: "0.8rem", opacity: 0.75, fontWeight: 600 }}>{med.dose} · {med.time}</div>
+                      </div>
+                      {checked[med.id] && <span style={{ fontSize: "0.82rem", fontWeight: 700, opacity: 0.9 }}>Taken ✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* ── Hydration ── */}
+              {trackFilter === "water" && (
+                <div>
+                  <p style={{ fontSize: "0.92rem", color: C.muted, fontWeight: 600, marginBottom: 16 }}>
+                    Tap each glass as the patient drinks it
+                  </p>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+                    {Array.from({ length: 8 }, (_, i) => {
+                      const filled = i < waterGlasses;
+                      return (
+                        <button key={i} onClick={() => setWaterGlasses(i < waterGlasses ? i : i + 1)}
+                          style={{
+                            background: filled ? G.teal : "#F9FAFB",
+                            border: `2px solid ${filled ? "transparent" : C.border}`,
+                            borderRadius: 16, padding: "18px 8px 14px", cursor: "pointer",
+                            color: filled ? C.white : C.muted,
+                            fontFamily: "'Poppins',sans-serif", transition: "all 0.2s",
+                            boxShadow: filled ? "0 4px 14px rgba(0,0,0,0.1)" : "none",
+                          }}>
+                          <div style={{ fontSize: "2rem" }}>{filled ? "💧" : "🫙"}</div>
+                          <div style={{ fontSize: "0.8rem", fontWeight: 700, marginTop: 6 }}>Glass {i + 1}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div style={{
+                    marginTop: 16, background: G.teal, borderRadius: 12,
+                    padding: "12px 18px", color: C.white, fontWeight: 700,
+                    fontSize: "1rem", textAlign: "center",
+                  }}>
+                    {waterGlasses === 0 ? "No glasses logged yet"
+                      : waterGlasses < 4 ? `${waterGlasses} glasses — keep going! 💪`
+                      : waterGlasses < 8 ? `${waterGlasses} glasses — great progress! 🌊`
+                      : "8 glasses — fully hydrated! 🎉"}
+                  </div>
+                </div>
+              )}
+
+              {/* ── Sleep ── */}
+              {trackFilter === "sleep" && (
+                <div>
+                  <p style={{ fontSize: "0.92rem", color: C.muted, fontWeight: 600, marginBottom: 16 }}>
+                    Tap each hour the patient slept last night
+                  </p>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const filled = i < sleepHours;
+                      return (
+                        <button key={i} onClick={() => setSleepHours(i < sleepHours ? i : i + 1)}
+                          style={{
+                            background: filled ? G.blue : "#F9FAFB",
+                            border: `2px solid ${filled ? "transparent" : C.border}`,
+                            borderRadius: 16, padding: "18px 8px 14px", cursor: "pointer",
+                            color: filled ? C.white : C.muted,
+                            fontFamily: "'Poppins',sans-serif", transition: "all 0.2s",
+                            boxShadow: filled ? "0 4px 14px rgba(0,0,0,0.1)" : "none",
+                          }}>
+                          <div style={{ fontSize: "2rem" }}>{filled ? "🌙" : "⭐"}</div>
+                          <div style={{ fontSize: "0.8rem", fontWeight: 700, marginTop: 6 }}>{i + 1} hr{i > 0 ? "s" : ""}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div style={{
+                    marginTop: 16, background: G.blue, borderRadius: 12,
+                    padding: "12px 18px", color: C.white, fontWeight: 700,
+                    fontSize: "1rem", textAlign: "center",
+                  }}>
+                    {sleepHours === 0 ? "No sleep logged yet"
+                      : sleepHours < 5 ? `${sleepHours} hrs — poor sleep, monitor closely ❗`
+                      : sleepHours < 7 ? `${sleepHours} hrs — below target, aim for 7–8 ⚠️`
+                      : sleepHours <= 9 ? `${sleepHours} hrs — great sleep! Target met ✅`
+                      : `${sleepHours} hrs — oversleeping, check in with patient 💤`}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* ── RIGHT COLUMN — Brain Foods ── */}
           <div className="ai2" style={S.card(C.orange)}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
               <label style={{ ...S.label, color: C.orange, marginBottom: 0 }}>Brain Foods</label>
@@ -1391,7 +1554,10 @@ function DietScreen({ role, meals, setMeals }) {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               {filtered.map((food, i) => (
-                  <div key={`${food.cat}-${food.benefit}`} style={{ background: C.white, border: `2px solid ${C.border}`, borderRadius: 16, padding: "18px 20px", overflow: "hidden", position: "relative" }}>
+                <div key={`${food.cat}-${food.benefit}`} style={{
+                  background: C.white, border: `2px solid ${C.border}`,
+                  borderRadius: 16, padding: "18px 20px", overflow: "hidden", position: "relative",
+                }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 5, background: foodGradients[i % foodGradients.length] }} />
                   <span style={{ fontSize: "2rem" }}>{food.icon}</span>
                   <div style={{ fontSize: "1.05rem", fontWeight: 700, marginTop: 10 }}>{food.name}</div>
@@ -1400,8 +1566,9 @@ function DietScreen({ role, meals, setMeals }) {
               ))}
             </div>
           </div>
+
         </div>
-    </div>
+      </div>
     </div>
   );
 }
@@ -1445,7 +1612,7 @@ function HelpScreen({ role }) {
           }}>{line.icon}</div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: "0.95rem", fontWeight: 700, color: C.text }}>{line.name}</div>
-            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: C.muted, fontFamily: "'DM Mono',monospace", marginTop: 4 }}>
+            <div style={{ fontSize: "1.1rem", fontWeight: 800, color: C.muted, fontFamily: "'Poppins', sans-seriff", marginTop: 4 }}>
               📞 {line.number}
             </div>
           </div>
